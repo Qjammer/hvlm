@@ -1,0 +1,15 @@
+1.0//Wingspan
+50.0//Aspect Ratio
+1.0//Taper Ratio
+0.0//Sweep Angle
+-0.0//Zero Lift Angle at Root
+-0.0//Zero Lift Angle at Tip
+0.0//Geometric Root Twist
+-0.0//Geometric Tip Twist
+0.8//Flap x pos
+0.0//Start of flap y pos
+1.0//End of flap y pos
+0.0//Flap Angle
+500//Subdivisions for a half-wing
+1.0//Air Speed
+5.0//Angle of Attack
