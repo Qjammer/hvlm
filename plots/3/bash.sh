@@ -58,11 +58,6 @@ do
 	result[$i]="$(../../hvm -d -p 1 10 ${arr[$i]} 0 0 0 0 0 0 0 0 0 $div 1 ${arrvals[$i]})"
 	result[$i]="$(printf "${result[$i]}"|cut -f1 -d"C"|sed 1d|sed 1d)";
 	printf "${result[$i]}" > "out$i.txt";
-
 done
-
-
-# echo $vals;
-# echo $output>outputs.txt
 
 $(gnuplot plot.gp)

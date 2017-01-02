@@ -158,10 +158,8 @@ int main(int argc, char** argv){
 	Vector3d airspeed_vec=airspeed*Vector3d({cos(aoa),0,sin(aoa)});
 
 	/****Actual Computing Stuff****/
-	clock_t startTime = clock();
 	Wing w=Wing(wingspan,ar,tr,sweep_angle,root_zero_lift,tip_zero_lift,root_eps,tip_eps,
 				flap_x,flap_y_start,flap_y_end,flap_angle,subdiv,airspeed_vec);
-	clock_t endTime = clock();
 
 	/****Outputting Results****/
 	std::ofstream fileStream(outputFile);
@@ -188,6 +186,4 @@ int main(int argc, char** argv){
 		fileStream<<w.moment_coeff_<<";";
 		fileStream<<w.drag_coeff_<<";"<<char(29)<<endl;
 	}
-
-	// cout<<"Total Time:"<<(endTime-startTime)<<endl;
 }

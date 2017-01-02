@@ -9,7 +9,7 @@ do
 	output="$output $(../../hvm -d -p 1 $i 1 0 0 0 0 0 0 0 0 0 200 1 -5 | grep "CL:"| cut -d":" -f 2;)"
 	output="$output\t";
 	output="$output $(../../hvm -d -p 1 $i 1 0 0 0 0 0 0 0 0 0 200 1 15 | grep "CL:"| cut -d":" -f 2;)"
-	output="$output \n";
+	output="$output\n";
 done
 
 echo $output>outputs.txt

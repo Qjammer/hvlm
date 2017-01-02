@@ -47,7 +47,6 @@ Wing::Wing(double _wingspan, double _ar, double _tr, double _sweep_angle,
 		flap_zero_lift_delta(-(M_PI-acos(2*flap_x-1)+2*sqrt(flap_x*(1-flap_x)))*flap_angle/M_PI),
 		subdivisions(2*_subdiv), airspeed_(_airspeed), aoa_(atan2(_airspeed[2],_airspeed[0])){
 	flap_zero_lift_delta*=0.9-0.01*180*flap_angle/M_PI;//Approximating correction factor through line
-	std::cout<<"Correction factor:"<<0.9-0.01*180*flap_angle/M_PI<<std::endl;
 	this->generateSections();
 	this->assembleMatrix();
 	this->assembleVector();
