@@ -12,6 +12,6 @@ do
 	output="$output\n";
 done
 
-echo $output>outputs.txt
+echo $output>out.txt
 
 $(gnuplot plot.gp)
