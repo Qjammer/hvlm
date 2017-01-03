@@ -7,9 +7,9 @@ set key inside right center font ",13"
 set xrange [0:0.5]
 set yrange [:]
 set xzeroaxis
-stats 'data.dat' using 0:($0==0?(x1=$1):$1)
+stats 'outdata.txt' using 0:($0==0?(x1=$1):$1)
 print x1
-stats 'data.dat' using 0:($0==0?(x2=$2):$2)
+stats 'outdata.txt' using 0:($0==0?(x2=$2):$2)
 print x2
 LABEL =sprintf("%s%f%s%f", "C_M0=",x1,"\nx_ac=",x2)
 set obj 10 rect at 0.1,0.6 size char strlen("C_M0=0.012334"), char 3

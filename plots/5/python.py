@@ -48,7 +48,7 @@ for item in val.split("\n"):
 		xacvals.append(float(item.split(":")[1]))
 alphanoflap.append(curr)
 
-f=open("noflap0.txt","w")
+f=open("outnoflap0.txt","w")
 f.write(val)
 f.close()
 
@@ -91,7 +91,7 @@ for item in val.split("\n"):
 		xacvals.append(float(item.split(":")[1]))
 alphanoflap.append(curr)
 
-f=open("noflap1.txt","w")
+f=open("outnoflap1.txt","w")
 f.write(val)
 f.close()
 
@@ -130,7 +130,7 @@ for j in range(50):
 			out=float(item.split(":")[1])
 alphaflap.append(curr)
 
-f=open("flap0.txt","w")
+f=open("outflap0.txt","w")
 f.write(val)
 f.close()
 
@@ -167,12 +167,12 @@ for j in range(50):
 			out=float(item.split(":")[1])
 alphaflap.append(curr)
 
-f=open("flap1.txt","w")
+f=open("outflap1.txt","w")
 f.write(val)
 f.close()
 
 
-val=subprocess.check_output(["paste","noflap0.txt","noflap1.txt","flap0.txt","flap1.txt"])
+val=subprocess.check_output(["paste","outnoflap0.txt","outnoflap1.txt","outflap0.txt","outflap1.txt"])
 f=open("out.txt","w")
 val=val[val.find("\n")+1:val.rfind("\n")]
 val=val[0:val.rfind("\n")]
@@ -182,7 +182,7 @@ f.write(val)
 f.close()
 
 x_ac=-(xacvals[3]-xacvals[1])/(xacvals[2]-xacvals[0])
-f=open("data.dat","w")
+f=open("outdata.txt","w")
 f.write("#C_M0\tx_ac\talphaCl=0noflap\talphaCl=1noflap\talphaCl=0flap\talphaCl=1flap\n")
 f.write(str(xacvals[1])+"\t")
 f.write(str(x_ac)+"\t")

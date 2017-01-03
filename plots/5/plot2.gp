@@ -13,11 +13,11 @@ max=1.6
 flappos=0.3
 fpos=flappos/2
 
-alpha0noflap=system("head -2 data.dat|tail -1|cut -d\"\t\" -f 3")
-alpha1noflap=system("head -2 data.dat|tail -1|cut -d\"\t\" -f 4")
+alpha0noflap=system("head -2 outdata.txt|tail -1|cut -d\"\t\" -f 3")
+alpha1noflap=system("head -2 outdata.txt|tail -1|cut -d\"\t\" -f 4")
 
-alpha0flap=system("head -2 data.dat|tail -1|cut -d\"\t\" -f 5")
-alpha1flap=system("head -2 data.dat|tail -1|cut -d\"\t\" -f 6")
+alpha0flap=system("head -2 outdata.txt|tail -1|cut -d\"\t\" -f 5")
+alpha1flap=system("head -2 outdata.txt|tail -1|cut -d\"\t\" -f 6")
 
 flapdelta=-(alpha0flap-alpha0noflap)/(alpha1flap-alpha0flap)
 
@@ -35,7 +35,6 @@ LABEL =sprintf("%s%f%s%f", "α_max, no flap=",amax1,"\nα_max, flap=",amax2)
 set obj 10 rect at 0.2,0.6 size char strlen("α_max, no flap==0.04"), char 3
 set obj 10 fillstyle empty border -1 front
 set label 10 at 0.2,0.68 LABEL front center
-print flapdelta
 
 set style line 1 linecolor rgb '#CC0000' linetype 1 linewidth 1 pointtype 1 pointsize 1
 set style line 2 linecolor rgb '#660066' linetype 1 linewidth 1
