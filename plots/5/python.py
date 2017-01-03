@@ -95,13 +95,14 @@ f=open("noflap1.txt","w")
 f.write(val)
 f.close()
 
-params=['../../hvm','-d','-p','1','8','0.5','9.5','-2','-2','5','0','0.6','0.0','0.4','10',str(div),'1',str(curr)]
+
 out=0
 curr=0
 prev=0
 delta=1
 dir=1
 target=0.0
+params=['../../hvm','-d','-p','1','8','0.5','9.5','-2','-2','5','0','0.8','0.0','0.3','10',str(div),'1',str(curr)]
 
 for item in val.split("\n"):
 	if "CL:" in item:
