@@ -13,7 +13,7 @@ for ar in AR:
 		CLarr=[];
 		CL2arr=[];
 		CDarr=[];
-		for angle in range(-15, 15, 1):
+		for angle in range(-5, 10, 1):
 			val=subprocess.check_output(['../../hvm','-d','-p','1',str(ar),str(tr),'0','0','0','0','0','0','0','0','0',str(div),'1',str(angle)])
 			CL=0;
 			CD=0;
@@ -26,8 +26,6 @@ for ar in AR:
 					CD=float(item.split(":")[1])
 					CDarr.append(CD)
 		(slope,yint,r,tt,stderr)=stats.linregress(CL2arr,CDarr)
-		# print slope
-		# print yint
 		oswald=1/(pi*ar*slope)
 		print [ar,tr,oswald]
 		f.write(str(tr)+"\t"+str(oswald)+"\n")
@@ -43,7 +41,7 @@ for sweep in SWEEP:
 		CLarr=[];
 		CL2arr=[];
 		CDarr=[];
-		for angle in range(-15, 15, 1):
+		for angle in range(-5, 10, 1):
 			val=subprocess.check_output(['../../hvm','-d','-p','1','8',str(tr),str(sweep),'0','0','0','0','0','0','0','0',str(div),'1',str(angle)])
 			CL=0;
 			CD=0;

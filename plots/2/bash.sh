@@ -1,8 +1,6 @@
 #!/bin/sh
 output="#AR\tCL_-5\tCL_15\tCM_-5\tCM_15\n";
 
-
-
 for i in $(seq 0 2.5 80)
 do
 	output="$output$i\t";
