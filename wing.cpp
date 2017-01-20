@@ -93,7 +93,7 @@ void Wing::generateSections(){
 	this->quarter_y_pos_=VectorXd(half);
 
 	Vector3d delta=Vector3d(0,this->wingspan/(2.0*total_subdiv),0);//TODO:We may have to stick this into the loop if we want variable widths
-	double dist=1.0*this->wingspan;
+	double dist=20.0*this->wingspan;
 
 	for(unsigned long i=0;i<total_subdiv;++i){
 		double x=((2.0*i+1)/total_subdiv)-1.0;//Fraction within wingspan from -1 to
@@ -169,7 +169,6 @@ void Wing::assembleVector(){
 
 void Wing::generateCirculation(){
 	this->circulation_=this->system_matrix_.colPivHouseholderQr().solve(system_vec_);
-
 }
 
 double Wing::getMeanAeroChord() const{
