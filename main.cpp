@@ -45,10 +45,9 @@ VectorXd interpVector(const MatrixXd& m,double pos,int axis){ // First dimension
 	return m.row(m.rows()-1);
 }
 
-Params parseFile(const std::string&& file){
+Params parseStream(std::istream&& str){
 	Params p;
-	std::ifstream filestream(file);
-	if(!filestream.good()){
+	if(!str.good()){
 		std::cout<<"Could not open file."<<endl;
 		return p;
 	}
@@ -56,65 +55,57 @@ Params parseFile(const std::string&& file){
 	std::cout<<"Parsing parameters"<<std::endl;
 
 	// Fourth Line
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd quarterx=parseVector(s);
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd quartery=parseVector(s);
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd quarterz=parseVector(s);
 	p.quarterLine.resize(quarterx.size(),3);
 	p.quarterLine<<quarterx,quartery,quarterz;
 
 	// Twist
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd twistx=parseVector(s);
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd twistv=parseVector(s);
 	p.twist.resize(twistx.size(),2);
 	p.twist<<twistx,twistv;
 
 	// Zero_Lift
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd zllx=parseVector(s);
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd zllv=parseVector(s);
 	p.zero_lift.resize(zllx.size(),2);
 	p.zero_lift<<zllx,zllv;
 
 	// Chord
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd cx=parseVector(s);
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd cv=parseVector(s);
 	p.chord.resize(cx.size(),2);
 	p.chord<<cx,cv;
 
 	// Subdiv
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	double sdv=atof(s.c_str());
 	if(sdv!=0){p.subdiv=sdv;}
 
 	//Airspeed
-	getline(filestream,s,'\n');
+	getline(str,s,'\n');
 	VectorXd v=parseVector(s);
 	p.airspeed<<v;
 	
 	return p;
 }
-/*
-std::vector<double> parseStdIn(int starting, char** argv){
-	std::vector<double> outv(PARAMS,-1);
-	std::string s;
-	for(int i=0;i<PARAMS;++i){ outv[i]=atof(argv[starting+i]); }
-	return outv;
-}
-*/
 
 int main(int argc, char** argv){
 	cout<<std::setprecision(10);
 	std::stringstream help_str;
 	help_str<<"Usage: hvm [OPTIONS...]"<<endl<<//Help message
-	"\t-f file,\tuse this file as input parameters, separated by \\n"<<endl<<
+	"\t-i file,\tuse this file as input parameters, separated by \\n. Use - as file for stdin input"<<endl<<
 	"\t-o file,\tuse this file as ouput"<<endl<<
 	"\t-d,\t\tuse degrees instead of radians for angle input"<<endl;
 
@@ -134,7 +125,11 @@ int main(int argc, char** argv){
 						std::cerr<<"Input File already loaded. Terminating."<<endl;
 						return 1;
 					} else {
-						params=parseFile(argv[curr+1]);
+						if(argv[curr+1][0]=='-'){
+							params=parseStream(std::move(std::cin));
+						} else {
+							params=parseStream(std::ifstream(argv[curr+1]));
+						}
 						paramsLoaded=true;
 						curr+=2;
 					}
