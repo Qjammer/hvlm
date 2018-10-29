@@ -163,8 +163,8 @@ int main(int argc, char** argv){
 	/****Unpacking parameters****/
 	if(deg){
 		constexpr double k=M_PI/180.0;
-		params.twist*=k;
-		params.zero_lift*=k;
+		params.twist.col(1)*=k;
+		params.zero_lift.col(1)*=k;
 	}
 	if(params.subdiv<50){
 		std::cerr<<"Too few subdivisions. Results are not guaranteed to be accurate."<<endl;
@@ -179,7 +179,6 @@ int main(int argc, char** argv){
 	if(fileOutput){
 		fileStream<<w.subdivisions<<endl;
 	}
-	std::cout<<"Gamma"<<w.circulation_<<std::endl;
 
 	MatrixXd lift_distr=MatrixXd(w.local_lift_coeff_.size(),2);
 	lift_distr<<-w.quarter_y_pos_,w.local_lift_coeff_;
@@ -191,7 +190,7 @@ int main(int argc, char** argv){
 	}
 
 	cout<<"CL:"<<w.lift_coeff_<<endl;
-	cout<<"CMle:"<<w.moment_coeff_<<endl;
+	cout<<"CMql:"<<w.moment_coeff_<<endl;
 	cout<<"CDi:"<<w.drag_coeff_<<endl;
 	if(fileOutput){
 		fileStream<<char(29);

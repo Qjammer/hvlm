@@ -5,7 +5,9 @@ WingSection::WingSection(const Vector3d& xA, const Vector3d& xB,
                          const Vector3d& ias, double vortL):
                 	xA(xA),xB(xB),xC(xC),xD(xD),
                 	n_(0.5*(xA-xB-xC+xD).cross(-xA-xB+xC+xD)),//Norm of n_ is the surface of the section
-                	horseshoe_(std::vector<Vector3d>{xA+vortL*ias.normalized(),xA,xB,xC,xD,xD+vortL*ias.normalized()})
+                	//horseshoe_(std::vector<Vector3d>{xB+vortL*ias.normalized(),xB,xC,xC+vortL*ias.normalized()})//Method A, 3 vortices, described in class, pretty shit, creates instabilities when discretization is high
+                	//horseshoe_(std::vector<Vector3d>{xB+vortL*(xA-xB).normalized(),xB,xC,xC+vortL*(xD-xC).normalized()})//Method B, 3 vortices, trailing follows chord, not airspeed. Significantly better oscillation-wise, yet less realistic
+                	horseshoe_(std::vector<Vector3d>{xA+vortL*ias.normalized(),xA,xB,xC,xD,xD+vortL*ias.normalized()})//Method C, 5 vortices, trailing follows chord until control point, then follows airspeed
 {
 }
 
@@ -72,7 +74,8 @@ double Wing::getZeroLiftAlt(double y) const{
 	if(flap_y_start<abs_y&&abs_y<flap_y_end){
 		flap_delta=flap_zero_lift_delta;
 	}
-	return twist+zll+flap_delta;//TODO: Add flaps
+	std::cout<<"absy:"<<abs_y<<"\ttwist:"<<twist<<"\tzll"<<zll<<std::endl;
+	return +twist-zll+flap_delta;//TODO: Add flaps
 }
 
 double Wing::getWingspan() const{
@@ -105,8 +108,8 @@ void Wing::generateSectionsAlt(){
 		double ch1=this->getChordAlt(x1);
 		double ch2=this->getChordAlt(x2);
 
-		Vector3d xA=xB+0.5*ch1*Vector3d(cos(zll1),0,sin(zll1));
-		Vector3d xD=xC+0.5*ch2*Vector3d(cos(zll2),0,sin(zll2));
+		Vector3d xA=xB+0.5*ch1*Vector3d(cos(zll1),0,-sin(zll1));
+		Vector3d xD=xC+0.5*ch2*Vector3d(cos(zll2),0,-sin(zll2));
 
 		WingSection sec=WingSection(xA,xB,xC,xD,this->airspeed_,20*this->getWingspan());
 

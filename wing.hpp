@@ -41,7 +41,7 @@ private:
 	double root_zero_lift, tip_zero_lift;
 	double root_twist, tip_twist;
 	double flap_x, flap_y_start, flap_y_end, flap_angle;
-	double flap_zero_lift_delta;
+	double flap_zero_lift_delta=0;
 	unsigned int subdivisions;
 
 	Vector3d airspeed_;
