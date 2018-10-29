@@ -1,0 +1,17 @@
+x0 x1 x2 # 1/4th line points. last point corresponds to tip of wing. First point must be zero
+y0 y1 y2
+z0 z1 z2
+
+x0 x1 # twist
+t0 t1
+
+x0 x1 #zll
+z0 z1
+
+x0 x1 #chord
+c0 c1
+
+subdiv #wing subdivisions
+ux uy uz # airspeed
+
+#possibly add flaps later
