@@ -41,7 +41,7 @@ const HorseShoe& WingSection::getHorseshoe() const{
 
 /****Wing****/
 
-Wing::Wing(Params p):subdivisions(p.subdiv),airspeed_(p.airspeed),quarter_pos_(p.quarterLine),twist_(p.twist),zll_(p.zero_lift),chord_(p.chord){
+Wing::Wing(Params p):subdivisions(p.subdiv),airspeed_(p.airspeed),quarter_pos_(p.quarterLine),twist_(p.twist),zll_(p.zero_lift),chord_(p.chord),polar_coeff_(p.polar){
 	std::cout<<"genSections"<<std::endl;
 	this->generateSections();
 	std::cout<<"assMatr"<<std::endl;
@@ -185,19 +185,25 @@ void Wing::assembleDragMatrix(){
 	auto invec_=this->sections_;
 	unsigned int n=invec_.size();
 	MatrixXd mat=MatrixXd(n,n);
+	this->viscous_drag_coeff_=0;
 	for(auto it1=invec_.begin();it1!=invec_.end();++it1){//For each control point
 		VectorXd vec=VectorXd(n);
 		for(auto it2=invec_.begin();it2!=invec_.end();++it2){//For each vortex
 			vec[it2-invec_.begin()]=it1->getHorseshoe().getInducedVec(it2->getQuarterPoint())[2];
 		}
 		mat.row(it1-invec_.begin())=vec;
+		double cl=this->local_lift_coeff_[it1-invec_.begin()];
+		const Vector3d& pcoef=this->polar_coeff_;
+		this->viscous_drag_coeff_+=it1->getSurface()*(pcoef[0]+pcoef[1]*cl+pcoef[2]*cl*cl);
+
 	}
 	this->induced_drag_matrix_=mat;
+	this->viscous_drag_coeff_/=this->getSurface();
 }
 
 void Wing::generateDragCoefficient(){
 	double ias=this->airspeed_.norm();
-	this->drag_coeff_=(-2.0/(ias*ias*2*getSurface()))*(this->gamma_deltay_.cwiseProduct(this->induced_drag_matrix_*this->circulation_)).sum();
+	this->induced_drag_coeff_=(-2.0/(ias*ias*2*getSurface()))*(this->gamma_deltay_.cwiseProduct(this->induced_drag_matrix_*this->circulation_)).sum();
 }
 
 double Wing::getSurface() const{

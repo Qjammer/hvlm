@@ -12,6 +12,7 @@ struct Params{
 	MatrixXd chord;
 	int subdiv;
 	Vector3d airspeed;
+	Vector3d polar;
 };
 
 class WingSection {
@@ -54,7 +55,7 @@ private:
 
 	VectorXd circulation_;
 	VectorXd local_lift_coeff_;
-	double lift_coeff_, moment_coeff_, drag_coeff_;
+	double lift_coeff_, moment_coeff_, induced_drag_coeff_, viscous_drag_coeff_;
 	VectorXd gamma_deltay_;
 
 	MatrixXd induced_drag_matrix_;
@@ -64,6 +65,7 @@ private:
 	MatrixXd twist_;
 	MatrixXd zll_;
 	MatrixXd chord_;
+	Vector3d polar_coeff_;
 
 public:
 	Wing(double wingspan, double ar, double tr, double sweep_angle,

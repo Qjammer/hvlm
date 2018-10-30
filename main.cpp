@@ -93,6 +93,10 @@ Params parseStream(std::istream&& str){
 	double sdv=atof(s.c_str());
 	if(sdv!=0){p.subdiv=sdv;}
 
+	// Polar
+	getline(str,s,'\n');
+	VectorXd pol=parseVector(s);
+	p.polar<<pol;
 	//Airspeed
 	getline(str,s,'\n');
 	VectorXd v=parseVector(s);
@@ -194,11 +198,13 @@ int main(int argc, char** argv){
 	/**** Various other coefficients ****/
 	cout<<"CL:"<<w.lift_coeff_<<endl;
 	cout<<"CMql:"<<w.moment_coeff_<<endl;
-	cout<<"CDi:"<<w.drag_coeff_<<endl;
+	cout<<"CDi:"<<w.induced_drag_coeff_<<endl;
+	cout<<"CDv:"<<w.viscous_drag_coeff_<<endl;
 	if(fileOutput){
 		fileStream<<char(29);
 		fileStream<<w.lift_coeff_<<";";
 		fileStream<<w.moment_coeff_<<";";
-		fileStream<<w.drag_coeff_<<";"<<char(29)<<endl;
+		fileStream<<w.induced_drag_coeff_<<";";
+		fileStream<<w.viscous_drag_coeff_<<";"<<char(29)<<endl;
 	}
 }
