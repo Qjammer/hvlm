@@ -20,7 +20,7 @@ Vector3d WingSection::getCP() const{
 }
 
 Vector3d WingSection::getInducedVec(const Vector3d& _xd) const{
-	return this->horseshoe_.getInducedVecAlt(_xd);
+	return this->horseshoe_.getInducedVec(_xd);
 }
 
 const Vector3d& WingSection::getNormalVec() const{
@@ -43,7 +43,7 @@ const HorseShoe& WingSection::getHorseshoe() const{
 
 Wing::Wing(Params p):subdivisions(p.subdiv),airspeed_(p.airspeed),quarter_pos_(p.quarterLine),twist_(p.twist),zll_(p.zero_lift),chord_(p.chord){
 	std::cout<<"genSections"<<std::endl;
-	this->generateSectionsAlt();
+	this->generateSections();
 	std::cout<<"assMatr"<<std::endl;
 	this->assembleMatrix();
 	std::cout<<"assVec"<<std::endl;
@@ -58,31 +58,30 @@ Wing::Wing(Params p):subdivisions(p.subdiv),airspeed_(p.airspeed),quarter_pos_(p
 	this->generateDragCoefficient();
 }
 
-double Wing::getTwistAlt(double x) const{
+double Wing::getTwist(double x) const{
 	return interpVector(this->twist_,fabs(x),0)(1);
 }
-double Wing::getChordAlt(double x) const{
+double Wing::getChord(double x) const{
 	return interpVector(this->chord_,fabs(x),0)(1);
 
 }
 
-double Wing::getZeroLiftAlt(double y) const{
+double Wing::getZeroLift(double y) const{
 	double abs_y=fabs(y);
-	double twist=this->getTwistAlt(y);
+	double twist=this->getTwist(y);
 	double zll=interpVector(this->zll_,abs_y,0)(1);
 	double flap_delta=0;
 	if(flap_y_start<abs_y&&abs_y<flap_y_end){
 		flap_delta=flap_zero_lift_delta;
 	}
-	std::cout<<"absy:"<<abs_y<<"\ttwist:"<<twist<<"\tzll"<<zll<<std::endl;
-	return +twist-zll+flap_delta;//TODO: Add flaps
+	return twist-zll+flap_delta;//TODO: Add flaps
 }
 
 double Wing::getWingspan() const{
 	return this->quarter_pos_.bottomRows<1>()(1);
 }
 
-void Wing::generateSectionsAlt(){
+void Wing::generateSections(){
 	std::vector<WingSection>section_vector;
 	unsigned long n=this->subdivisions;
 	this->width_diffs_=VectorXd(n);
@@ -102,11 +101,11 @@ void Wing::generateSectionsAlt(){
 		Vector3d xB=this->getQuarterPos(x1);
 		Vector3d xC=this->getQuarterPos(x2);
 
-		double zll1=this->getZeroLiftAlt(x1);
-		double zll2=this->getZeroLiftAlt(x2);
+		double zll1=this->getZeroLift(x1);
+		double zll2=this->getZeroLift(x2);
 		
-		double ch1=this->getChordAlt(x1);
-		double ch2=this->getChordAlt(x2);
+		double ch1=this->getChord(x1);
+		double ch2=this->getChord(x2);
 
 		Vector3d xA=xB+0.5*ch1*Vector3d(cos(zll1),0,-sin(zll1));
 		Vector3d xD=xC+0.5*ch2*Vector3d(cos(zll2),0,-sin(zll2));
@@ -189,7 +188,7 @@ void Wing::assembleDragMatrix(){
 	for(auto it1=invec_.begin();it1!=invec_.end();++it1){//For each control point
 		VectorXd vec=VectorXd(n);
 		for(auto it2=invec_.begin();it2!=invec_.end();++it2){//For each vortex
-			vec[it2-invec_.begin()]=it1->getHorseshoe().getInducedVecAlt(it2->getQuarterPoint())[2];
+			vec[it2-invec_.begin()]=it1->getHorseshoe().getInducedVec(it2->getQuarterPoint())[2];
 		}
 		mat.row(it1-invec_.begin())=vec;
 	}

@@ -18,7 +18,7 @@ HorseShoe::HorseShoe(const std::vector<Vector3d>& pts){
 	}
 }
 
-Vector3d HorseShoe::getInducedVecAlt(const Vector3d& xp) const{
+Vector3d HorseShoe::getInducedVec(const Vector3d& xp) const{
 	Vector3d r(0.,0.,0.);
 	for(auto it=this->vortices_.begin();it!=this->vortices_.end();it++){
 		r+=it->getInducedVec(xp);

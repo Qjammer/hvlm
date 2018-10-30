@@ -17,6 +17,6 @@ class HorseShoe{
 		std::vector<Vortex> vortices_;
 	public:
 		HorseShoe(const std::vector<Vector3d>& pts);
-		Vector3d getInducedVecAlt(const Vector3d& xp) const;
+		Vector3d getInducedVec(const Vector3d& xp) const;
 		double width() const;
 };

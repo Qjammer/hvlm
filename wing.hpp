@@ -16,11 +16,10 @@ struct Params{
 
 class WingSection {
 private:
-public:
 	Vector3d xA, xB, xC, xD;
 	Vector3d  n_;
 	HorseShoe horseshoe_;
-//public:
+public:
 	WingSection(const Vector3d& xA, const Vector3d& xB,
 	            const Vector3d& xC, const Vector3d& xD,
 	            const Vector3d& ias, double vortLength);
@@ -37,15 +36,13 @@ public:
 class Wing{
 	friend int main(int argc, char** argv);
 private:
-	double wingspan, ar, tr, sweep_angle;
-	double root_zero_lift, tip_zero_lift;
-	double root_twist, tip_twist;
+	//double root_zero_lift, tip_zero_lift;
+	//double root_twist, tip_twist;
 	double flap_x, flap_y_start, flap_y_end, flap_angle;
 	double flap_zero_lift_delta=0;
 	unsigned int subdivisions;
 
 	Vector3d airspeed_;
-	double aoa_;
 
 	std::vector<WingSection> sections_;
 
@@ -75,8 +72,6 @@ public:
 		unsigned int subdiv, Vector3d& airspeed_);
 	Wing(Params p);
 
-	double getZeroLift(double frac) const;
-	double getChord(double frac) const;
 	double getMeanAeroChord() const;
 	double getSurface() const;
 
@@ -90,9 +85,8 @@ public:
 
 	double getWingspan() const;
 	Vector3d getQuarterPos(double x) const;
-	void generateSectionsAlt();
-	double getTwistAlt(double x) const;
-	double getZeroLiftAlt(double x) const;
+	double getTwist(double x) const;
+	double getZeroLift(double x) const;
 	Vector3d getNormalToSection(const Vector3d& quarterVector,const Vector3d& cpVector) const;
-	double getChordAlt(double x) const;
+	double getChord(double x) const;
 };
